@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
-import 'services/openai_service.dart';
 import 'providers/theme_provider.dart';
 import 'config/theme.dart';
 import 'screens/settings_screen.dart';
 import 'features/home/screens/home_screen.dart';
+import 'features/notifications/screens/notification_center_screen.dart';
 
 void main() async {
   try {
@@ -63,8 +63,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     final pages = [
       const HomeScreen(),
-      const Center(child: Text('Calendar')),
-      const Center(child: Text('Notifications')),
+      const NotificationCenterScreen(),
       const SettingsScreen(),
     ];
 
@@ -83,10 +82,6 @@ class _HomePageState extends State<HomePage> {
           NavigationDestination(
             icon: Icon(Icons.home),
             label: 'Home',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.calendar_month),
-            label: 'Calendar',
           ),
           NavigationDestination(
             icon: Icon(Icons.notifications),

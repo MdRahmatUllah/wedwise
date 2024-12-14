@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../models/user_preferences.dart';
 import '../widgets/settings_section.dart';
+import '../providers/theme_provider.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -16,8 +18,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
   @override
   void initState() {
     super.initState();
-    // TODO: Load preferences from storage
+    // Load preferences from storage and sync with ThemeProvider
     _preferences = UserPreferences();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final themeProvider = Provider.of<ThemeProvider>(context, listen: false);
+      setState(() {
+        _preferences =
+            _preferences.copyWith(themeMode: themeProvider.themeMode);
+      });
+    });
   }
 
   @override
@@ -251,6 +260,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   void _showThemeDialog() {
+    final themeProvider = Provider.of<ThemeProvider>(context, listen: false);
     showDialog(
       context: context,
       builder: (context) => SimpleDialog(
@@ -265,6 +275,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               setState(() {
                 _preferences = _preferences.copyWith(themeMode: value);
               });
+              themeProvider.setThemeMode(value!);
               _savePreferences();
             },
           ),
@@ -277,6 +288,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               setState(() {
                 _preferences = _preferences.copyWith(themeMode: value);
               });
+              themeProvider.setThemeMode(value!);
               _savePreferences();
             },
           ),
@@ -289,6 +301,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               setState(() {
                 _preferences = _preferences.copyWith(themeMode: value);
               });
+              themeProvider.setThemeMode(value!);
               _savePreferences();
             },
           ),
